@@ -1,6 +1,16 @@
 # ollama-image-describer
 
-CLI tool to automatically generate text descriptions for images using Ollama vision models (LLaVA, Qwen3-VL, Llama Vision).
+CLI tool to automatically generate text descriptions (captions) for images using Ollama vision models (LLaVA, Qwen3-VL, Llama Vision).
+
+## Use Case
+
+**Perfect for AI image generation training!** This tool is designed to help you create caption files for training LoRA (Low-Rank Adaptation) models on image generation AI like Stable Diffusion, Flux, z-image, or other diffusion models.
+
+When training a LoRA, each image in your dataset needs an accompanying `.txt` file with a description. This tool automates that process by:
+- Analyzing each image with a vision AI model
+- Generating detailed, consistent descriptions
+- Saving them as `.txt` files alongside your images
+- Optionally adding a suffix (like artist name or style trigger word)
 
 ## Prerequisites
 
