@@ -1,7 +1,7 @@
 [project]
 name = "image-describer"
 version = "0.1.0"
-description = "Application CLI pour décrire des images avec Ollama Vision"
+description = "CLI tool to generate image descriptions with Ollama Vision"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

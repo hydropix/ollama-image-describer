@@ -1,4 +1,4 @@
-"""Module de chargement de la configuration."""
+"""Configuration loading module."""
 
 import os
 from dataclasses import dataclass, field
@@ -12,7 +12,7 @@ load_dotenv()
 
 @dataclass
 class Config:
-    """Configuration de l'application."""
+    """Application configuration."""
 
     ollama_host: str = "http://localhost:11434"
     model: str = "qwen3-vl:8b"
@@ -25,7 +25,7 @@ class Config:
 
 
 def load_config(config_path: Path | None = None, suffix: str | None = None) -> Config:
-    """Charge la configuration depuis .env et un fichier YAML optionnel.
+    """Load configuration from .env and optional YAML file.
 
     Priority (highest to lowest):
         1. CLI arguments (suffix)
@@ -34,11 +34,11 @@ def load_config(config_path: Path | None = None, suffix: str | None = None) -> C
         4. Default values
 
     Args:
-        config_path: Chemin vers le fichier de configuration YAML.
-        suffix: Suffix à ajouter aux descriptions (depuis CLI).
+        config_path: Path to YAML configuration file.
+        suffix: Suffix to append to descriptions (from CLI).
 
     Returns:
-        Config: L'objet de configuration chargé.
+        Config: The loaded configuration object.
     """
     # Start with defaults
     ollama_host = Config.ollama_host

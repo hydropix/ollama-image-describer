@@ -1,4 +1,4 @@
-"""Point d'entrée CLI pour l'application Image Describer."""
+"""CLI entry point for the Image Describer application."""
 
 from pathlib import Path
 from typing import Annotated, Optional
@@ -10,16 +10,16 @@ from .processor import process_images
 
 app = typer.Typer(
     name="image-describer",
-    help="Génère des descriptions d'images avec Ollama Vision.",
+    help="Generate image descriptions with Ollama Vision.",
 )
 
 
 @app.command()
 def main(
-    dossier_images: Annotated[
+    image_folder: Annotated[
         Path,
         typer.Argument(
-            help="Chemin du dossier contenant les images",
+            help="Path to the folder containing images",
             exists=True,
             file_okay=False,
             dir_okay=True,
@@ -31,7 +31,7 @@ def main(
         typer.Option(
             "--config",
             "-c",
-            help="Chemin du fichier YAML de configuration",
+            help="Path to YAML configuration file",
             exists=True,
             file_okay=True,
             dir_okay=False,
@@ -42,14 +42,14 @@ def main(
         typer.Option(
             "--suffix",
             "-s",
-            help="Texte ajouté à la fin de chaque description (ex: ', By Artist')",
+            help="Text appended to each description (e.g., ', By Artist')",
         ),
     ] = None,
     overwrite: Annotated[
         bool,
         typer.Option(
             "--overwrite/--no-overwrite",
-            help="Écraser les fichiers .txt existants (activé par défaut)",
+            help="Overwrite existing .txt files (enabled by default)",
         ),
     ] = True,
     verbose: Annotated[
@@ -57,28 +57,28 @@ def main(
         typer.Option(
             "--verbose",
             "-v",
-            help="Mode verbeux",
+            help="Verbose mode",
         ),
     ] = False,
 ) -> None:
-    """Traite les images d'un dossier et génère des descriptions."""
+    """Process images in a folder and generate descriptions."""
     cfg = load_config(config, suffix=suffix)
 
     if verbose:
-        print(f"Modèle: {cfg.model}")
-        print(f"Dossier: {dossier_images}")
+        print(f"Model: {cfg.model}")
+        print(f"Folder: {image_folder}")
         print(f"Extensions: {', '.join(cfg.supported_extensions)}")
         print("-" * 40)
 
     processed, skipped = process_images(
-        folder=dossier_images,
+        folder=image_folder,
         config=cfg,
         overwrite=overwrite,
         verbose=verbose,
     )
 
     print("-" * 40)
-    print(f"Terminé! {processed} image(s) traitée(s), {skipped} ignorée(s).")
+    print(f"Done! {processed} image(s) processed, {skipped} skipped.")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""Processeur pour traiter les images d'un dossier."""
+"""Processor for handling images in a folder."""
 
 from pathlib import Path
 
@@ -7,14 +7,14 @@ from .ollama_client import describe_image
 
 
 def find_images(folder: Path, extensions: list[str]) -> list[Path]:
-    """Trouve toutes les images dans un dossier.
+    """Find all images in a folder.
 
     Args:
-        folder: Dossier à scanner.
-        extensions: Liste des extensions supportées.
+        folder: Folder to scan.
+        extensions: List of supported extensions.
 
     Returns:
-        Liste des chemins vers les images trouvées.
+        List of paths to found images.
     """
     images = set()
     for ext in extensions:
@@ -29,16 +29,16 @@ def process_images(
     overwrite: bool = False,
     verbose: bool = False,
 ) -> tuple[int, int]:
-    """Traite toutes les images d'un dossier.
+    """Process all images in a folder.
 
     Args:
-        folder: Dossier contenant les images.
-        config: Configuration de l'application.
-        overwrite: Si True, écrase les fichiers .txt existants.
-        verbose: Si True, affiche des informations détaillées.
+        folder: Folder containing images.
+        config: Application configuration.
+        overwrite: If True, overwrite existing .txt files.
+        verbose: If True, display detailed information.
 
     Returns:
-        Tuple (nombre d'images traitées, nombre d'images ignorées).
+        Tuple (number of images processed, number of images skipped).
     """
     images = find_images(folder, config.supported_extensions)
     processed = 0
@@ -46,18 +46,18 @@ def process_images(
 
     total = len(images)
     if verbose:
-        print(f"Trouvé {total} image(s) à traiter.")
+        print(f"Found {total} image(s) to process.")
 
     for i, image_path in enumerate(images, 1):
         txt_path = image_path.with_suffix(".txt")
 
         if txt_path.exists() and not overwrite:
             if verbose:
-                print(f"[{i}/{total}] Ignoré (existe déjà): {image_path.name}")
+                print(f"[{i}/{total}] Skipped (already exists): {image_path.name}")
             skipped += 1
             continue
 
-        print(f"[{i}/{total}] Traitement: {image_path.name}...")
+        print(f"[{i}/{total}] Processing: {image_path.name}...")
 
         try:
             description = describe_image(
@@ -75,10 +75,10 @@ def process_images(
             processed += 1
 
             if verbose:
-                print(f"  -> Sauvegardé: {txt_path.name}")
+                print(f"  -> Saved: {txt_path.name}")
 
         except Exception as e:
-            print(f"  Erreur: {e}")
+            print(f"  Error: {e}")
             skipped += 1
 
     return processed, skipped
